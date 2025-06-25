@@ -1,0 +1,67 @@
+[gd_scene load_steps=10 format=2]
+
+[ext_resource path="res://Elephant/Standing.png" type="Texture" id=1]
+[ext_resource path="res://Elephant/Walking1.png" type="Texture" id=2]
+[ext_resource path="res://Elephant/walking4.png" type="Texture" id=3]
+[ext_resource path="res://Peanut.gd" type="Script" id=4]
+[ext_resource path="res://Elephant/Walking3.png" type="Texture" id=5]
+[ext_resource path="res://Elephant/Walking2.png" type="Texture" id=6]
+[ext_resource path="res://OtherDrawings/NorthernLights.png" type="Texture" id=7]
+
+[sub_resource type="SpriteFrames" id=1]
+animations = [ {
+"frames": [ ExtResource( 2 ), ExtResource( 6 ), ExtResource( 5 ), ExtResource( 3 ) ],
+"loop": true,
+"name": "Walking",
+"speed": 5.0
+}, {
+"frames": [ ExtResource( 1 ) ],
+"loop": true,
+"name": "Staying",
+"speed": 5.0
+} ]
+
+[sub_resource type="RectangleShape2D" id=2]
+extents = Vector2( 24, 24 )
+
+[node name="Peanut" type="KinematicBody2D"]
+script = ExtResource( 4 )
+__meta__ = {
+"_edit_group_": true
+}
+
+[node name="PeanutAppearance" type="AnimatedSprite" parent="."]
+position = Vector2( 0, -13 )
+scale = Vector2( 0.29, 0.29 )
+frames = SubResource( 1 )
+animation = "Staying"
+speed_scale = 1.5
+
+[node name="CollisionShape" type="CollisionShape2D" parent="."]
+shape = SubResource( 2 )
+
+[node name="PeanutArea" type="Area2D" parent="."]
+
+[node name="CollisionShape" type="CollisionShape2D" parent="PeanutArea"]
+shape = SubResource( 2 )
+
+[node name="Camera2D" type="Camera2D" parent="."]
+current = true
+limit_left = 0
+limit_top = 0
+limit_right = 7500
+limit_bottom = 7500
+
+[node name="ParallaxBackground" type="ParallaxBackground" parent="."]
+
+[node name="ParallaxLayer" type="ParallaxLayer" parent="ParallaxBackground"]
+motion_scale = Vector2( 0.2, 0.2 )
+motion_offset = Vector2( 0, -250 )
+motion_mirroring = Vector2( 1000, 0 )
+
+[node name="Sprite" type="Sprite" parent="ParallaxBackground/ParallaxLayer"]
+texture = ExtResource( 7 )
+centered = false
+
+[connection signal="area_entered" from="PeanutArea" to="." method="_on_Area2D_area_entered"]
+[connection signal="area_exited" from="PeanutArea" to="." method="_on_Area2D_area_exited"]
